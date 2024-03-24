@@ -14,8 +14,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.topic2.android.notes.R
 import com.topic2.android.notes.theme.rwGreen
 
@@ -31,10 +34,11 @@ fun Note() {
         .background(Color.White, backgroundShape)
     ) {
         NoteColor(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+              .padding(start=16.dp,end = 16.dp),
             color = rwGreen,
             size=40.dp,
-            padding=4.dp,
             border=1.dp
         )
         Column(modifier = Modifier
@@ -42,8 +46,24 @@ fun Note() {
             .align(Alignment.CenterVertically)
 
         ) {
-            Text(stringResource(id = R.string.app_title), maxLines = 1)
-            Text(stringResource(id = R.string.app_content), maxLines = 1)
+            Text(stringResource(id = R.string.app_title),
+                color = Color.Black,
+                maxLines = 1,
+                style = TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    letterSpacing = 0.15.sp
+                )
+            )
+            Text(stringResource(id = R.string.app_content),
+                color=Color.Black.copy(alpha=0.75f),
+                maxLines = 1,
+                style = TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp,
+                    letterSpacing = 0.25.sp
+                )
+            )
         }
         Checkbox(
             checked = false,
