@@ -2,5 +2,6 @@
     <string name="app_name">Notes</string>
     <string name="app_title">Title</string>
     <string name="app_content">Content</string>
+    <string name="app_cart">Cart</string>
 
 </resources>
