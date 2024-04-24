@@ -5,9 +5,14 @@ import androidx.compose.runtime.Composable
 import com.topic2.android.notes.viewmodel.MainViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.rememberScaffoldState
 
@@ -46,6 +51,20 @@ fun NotesScreen(
             }
         )
     },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { viewModel.onCreateNewNoteClick() },
+                contentColor = MaterialTheme.colors.background,
+                content = {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Add Note Button"
+                    )
+                }
+            )
+        },
+
         scaffoldState = scaffoldState,
         drawerContent = {
             AppDrawer(
