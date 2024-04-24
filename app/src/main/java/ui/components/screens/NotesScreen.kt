@@ -1,18 +1,29 @@
-package ui.components.screens
+package com.topic2.android.notes.ui.screens
 
+import android.annotation.SuppressLint
+import androidx.compose.runtime.Composable
+import com.topic2.android.notes.viewmodel.MainViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.runtime.Composable
+import androidx.compose.material.rememberScaffoldState
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import com.topic2.android.notes.domain.model.NoteModel
-import com.topic2.android.notes.viewmodel.MainViewModel
-import ui.components.Note
+import com.topic2.android.notes.routing.Screen
+import com.topic2.android.notes.ui.components.Note
+import kotlinx.coroutines.launch
+import ui.components.AppDrawer
+
 import ui.components.TopAppBar
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NotesScreen(
     viewModel: MainViewModel
@@ -20,45 +31,67 @@ fun NotesScreen(
     val notes: List<NoteModel> by viewModel
         .notesNotInTrash
         .observeAsState(listOf())
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-    Column {
+    val coroutineScope = rememberCoroutineScope()
+
+    Scaffold (topBar={
         TopAppBar(
-            title = "Notes",
+            title = "Заметки",
             icon = Icons.Filled.List,
-            onIconClick = {}
+            onIconClick = {
+                coroutineScope.launch {
+                    scaffoldState.drawerState.open()
+                }
+            }
         )
+    },
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            AppDrawer(
+                currentScreen = Screen.Notes, closeDrawerAction ={
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                }
+            )
+        },
+        content = {
+            if(notes.isNotEmpty()){
                 NotesList(
-                    notes = notes,
-                    onNoteCheckedChange = { viewModel.onNoteCheckedChange(it) },
+                    notes = notes, onNoteCheckedChange = { viewModel.onNoteCheckedChange(it) },
                     onNoteClick = { viewModel.onNoteClick(it) }
                 )
             }
         }
+    )
+}
+
 @Composable
 private fun NotesList(
     notes: List<NoteModel>,
     onNoteCheckedChange: (NoteModel) -> Unit,
-    onNoteClick: (NoteModel) -> Unit
-) {
-    LazyColumn {
-        items(count = notes.size) { noteIndex ->
+    onNoteClick:(NoteModel) -> Unit
+){
+    LazyColumn{
+        items(count = notes.size){noteIndex ->
             val note = notes[noteIndex]
-            Note(
-                note = note,
+            Note(note = note,
                 onNoteClick = onNoteClick,
                 onNoteCheckedChange = onNoteCheckedChange
             )
         }
     }
 }
+
 @Preview
 @Composable
-private fun NotesListPreview() {
+private fun  NotesListPreview(){
     NotesList(
         notes = listOf(
-            NoteModel( 1, "Note 1", "Content 1", null),
-            NoteModel ( 2, "Note 2", "Content 2", false),
-            NoteModel( 3, "Note 3", "Content 3", true)
+            NoteModel(1,"Note 1", "Content 1", null),
+            NoteModel(2,"Note 2", "Content 2", false) ,
+            NoteModel(3,"Note 1", "Content 3", true)
         ),
         onNoteCheckedChange = {},
         onNoteClick = {}
