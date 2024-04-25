@@ -1,5 +1,6 @@
 package com.topic2.android.notes.ui.screens
 
+import Note
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,8 +14,6 @@ import androidx.compose.ui.res.painterResource
 import com.topic2.android.notes.R
 import com.topic2.android.notes.domain.model.NoteModel
 import com.topic2.android.notes.routing.Screen
-import com.topic2.android.notes.ui.components.Note
-
 import com.topic2.android.notes.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import ui.components.AppDrawer
